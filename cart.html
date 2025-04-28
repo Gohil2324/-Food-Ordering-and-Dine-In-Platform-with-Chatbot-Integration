@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<!-- Cart Section -->
+<section class="cart">
+    <div class="container">
+        <h2>Your Shopping Cart</h2>
+
+        <div class="cart-container">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-items">
+                    <!-- Items will be dynamically added here -->
+                </tbody>
+            </table>
+
+            <div class="cart-summary">
+                <p><strong>Subtotal:</strong> <span id="subtotal">$0.00</span></p>
+                <p><strong>Tax (5%):</strong> <span id="tax">$0.00</span></p>
+                <p><strong>Total:</strong> <span id="total">$0.00</span></p>
+                <button class="btn checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+            </div>
+
+            <p><a href="{{ url_for('menu') }}" class="continue-shopping">← Continue Shopping</a></p>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let cartTable = document.getElementById("cart-items");
+
+    function updateCartPage() {
+        cartTable.innerHTML = "";
+
+        if (cart.length === 0) {
+            cartTable.innerHTML = "<tr><td colspan='6'>Your cart is empty! <a href='{{ url_for('menu') }}'>Continue Shopping</a></td></tr>";
+        } else {
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                let total = item.price * item.quantity;
+                subtotal += total;
+
+                let row = `
+                    <tr>
+                        <td><img src="/static/images/${item.image}" alt="${item.name}" class="cart-img"></td>
+                        <td>${item.name}</td>
+                        <td>$${item.price.toFixed(2)}</td>
+                        <td>
+                            <input type="number" class="cart-qty" value="${item.quantity}" min="1" data-index="${index}">
+                        </td>
+                        <td>$${total.toFixed(2)}</td>
+                        <td><button class="btn remove-item" data-index="${index}">Remove</button></td>
+                    </tr>
+                `;
+                cartTable.innerHTML += row;
+            });
+
+            let tax = subtotal * 0.05;
+            let total = subtotal + tax;
+
+            document.getElementById("subtotal").innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById("tax").innerText = `$${tax.toFixed(2)}`;
+            document.getElementById("total").innerText = `$${total.toFixed(2)}`;
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            // Add event listeners for quantity change and item removal
+            document.querySelectorAll(".cart-qty").forEach(input => {
+                input.addEventListener("change", function () {
+                    let index = this.dataset.index;
+                    let newQty = this.value;
+                    cart[index].quantity = parseInt(newQty);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartPage();
+                });
+            });
+
+            document.querySelectorAll(".remove-item").forEach(button => {
+                button.addEventListener("click", function () {
+                    let index = this.dataset.index;
+                    cart.splice(index, 1);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartPage();
+                });
+            });
+        }
+    }
+
+    updateCartPage();
+
+    document.getElementById("checkout-btn").addEventListener("click", function () {
+        if (cart.length === 0) {
+            alert("Your cart is empty! Please add items before proceeding.");
+        } else {
+            window.location.href = "{{ url_for('order') }}";
+        }
+    });
+});
+</script>
+
+<style>
+/* Cart Page Styling */
+body {
+    background: #222222; /* Dark background */
+    color: white; /* White text */
+}
+
+.cart {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.cart-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #333333;
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.cart h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: white; /* Black Text */
+}
+
+/* Cart Table */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.cart-table th, .cart-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    color: white; /* Black Text */
+}
+
+.cart-img {
+    width: 60px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.cart-qty {
+    width: 50px;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #000; /* Black Text */
+}
+
+/* Remove Item Button */
+.remove-item {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.remove-item:hover {
+    background: #c0392b;
+}
+
+/* Cart Summary */
+.cart-summary {
+    text-align: right;
+    font-size: 18px;
+    margin-top: 20px;
+    color: #000; /* Black Text */
+}
+
+.cart-summary p {
+    margin: 5px 0;
+    color: #000; /* Black Text */
+}
+
+/* Checkout Button */
+.checkout-btn {
+    background: linear-gradient(45deg, #ff6600, #ff3300);
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.checkout-btn:hover {
+    background: linear-gradient(45deg, #ff3300, #cc0000);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Continue Shopping Link */
+.continue-shopping {
+    display: inline-block;
+    margin-top: 20px;
+    color: #FFA726; /* Black Text */
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.continue-shopping:hover {
+    color: darkred;
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .cart-container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .cart h2 {
+        font-size: 24px;
+    }
+
+    .cart-table th, .cart-table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .cart-summary p {
+        font-size: 16px;
+    }
+
+    .checkout-btn {
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+</style>
+
+{% endblock %}

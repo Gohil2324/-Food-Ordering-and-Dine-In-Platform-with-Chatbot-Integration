@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}Search - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<!-- Search Section -->
+<section class="search-page">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2>Search for Your Favorite Food</h2>
+            <p>Find dishes, categories, or ingredients you love!</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Search for food..." onkeyup="searchFood(event)">
+            <button onclick="fetchSearchResults()"><i class="fa fa-search"></i></button>
+        </div>
+
+        <!-- Search Results -->
+        <div class="search-results" id="search-results">
+            <p class="text-muted">Type to search for delicious meals...</p>
+        </div>
+    </div>
+</section>
+
+<style>
+    .search-page {
+        padding: 40px 0;
+    }
+    .search-box {
+        display: flex;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+    .search-box input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        outline: none;
+    }
+    .search-box button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .search-results {
+        max-width: 800px;
+        margin: 20px auto;
+    }
+    .result-item {
+        display: flex;
+        align-items: center;
+        background: #f8f9fa;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 8px;
+    }
+    .result-item img {
+        width: 80px;
+        height: 80px;
+        border-radius: 5px;
+        margin-right: 15px;
+    }
+</style>
+
+<script>
+    function searchFood(event) {
+        if (event.key === "Enter") {
+            fetchSearchResults();
+        }
+    }
+
+    function fetchSearchResults() {
+        let query = document.getElementById("search-input").value;
+        if (query.trim() === "") {
+            document.getElementById("search-results").innerHTML = "<p class='text-muted'>Please enter a search term.</p>";
+            return;
+        }
+
+        fetch("/search", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query: query })
+        })
+        .then(response => response.json())
+        .then(data => {
+            let resultsContainer = document.getElementById("search-results");
+            resultsContainer.innerHTML = ""; // Clear previous results
+
+            if (data.results.length === 0) {
+                resultsContainer.innerHTML = "<p class='text-muted'>No matching items found.</p>";
+                return;
+            }
+
+            data.results.forEach(item => {
+                let resultItem = document.createElement("div");
+                resultItem.classList.add("result-item");
+                resultItem.innerHTML = `
+                    <img src="/static/images/${item.image}" alt="${item.name}">
+                    <div>
+                        <h5>${item.name}</h5>
+                        <p>${item.description}</p>
+                        <strong>Price: $${item.price}</strong>
+                    </div>
+                `;
+                resultsContainer.appendChild(resultItem);
+            });
+        });
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Confirmation - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<style>
+/* Order Confirmation Section */
+.order-confirmation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+    background-color: #222; /* Dark Background */
+}
+
+/* Confirmation Box */
+.confirmation-box {
+    background: #333; /* Dark Grey Box */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+    color: white;
+}
+
+.confirmation-box h2 {
+    font-size: 28px;
+    color: #ffcc00; /* Yellow for contrast */
+    margin-bottom: 10px;
+}
+
+.confirmation-box p {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #ddd;
+}
+
+/* Order Details */
+.order-details {
+    background: #444; /* Slightly lighter dark */
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: left;
+}
+
+.order-details p {
+    font-size: 16px;
+    color: #fff;
+    margin: 5px 0;
+}
+
+/* Checkmark Icon */
+.confirmation-icon {
+    font-size: 50px;
+    color: #28a745;
+    margin-bottom: 15px;
+}
+
+/* Buttons */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-primary, .btn-feedback {
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background: #ffcc00;
+    color: black;
+}
+
+.btn-primary:hover {
+    background: #ffaa00;
+}
+
+.btn-feedback {
+    background: #007bff;
+    color: white;
+}
+
+.btn-feedback:hover {
+    background: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .confirmation-box {
+        padding: 30px;
+    }
+
+    .confirmation-box h2 {
+        font-size: 24px;
+    }
+
+    .confirmation-box p {
+        font-size: 16px;
+    }
+
+    .button-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-primary, .btn-feedback {
+        width: 100%;
+        padding: 10px;
+    }
+}
+</style>
+
+<!-- Order Confirmation Section -->
+<section class="order-confirmation">
+    <div class="confirmation-box">
+        <i class="confirmation-icon fas fa-check-circle"></i>
+        <h2>Order Confirmed! 🎉</h2>
+        <p>Thank you for your order! Your order ID is <strong>#{{ order_id }}</strong>.</p>
+
+        <div class="order-details">
+            <p><strong>Total Price:</strong> <span id="final-price">{{ total_price }}</span></p>
+            <p><strong>Payment Method:</strong> {{ payment_method }}</p>
+            <p>Your order is being processed and will be delivered soon. 🚀</p>
+        </div>
+
+        <div class="button-container">
+            <a href="{{ url_for('menu') }}" class="btn-primary">Continue Shopping</a>
+            <a href="{{ url_for('feedback') }}" class="btn-feedback">Give Feedback</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

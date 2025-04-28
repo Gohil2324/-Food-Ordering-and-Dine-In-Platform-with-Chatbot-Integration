@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<style>
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* About Section */
+.about {
+    padding: 50px 20px;
+    background: #222;
+}
+
+.section-title {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #FFFFFF;
+}
+
+.section-subtitle {
+    font-size: 18px;
+    color: #FFFFFF;
+    margin-bottom: 30px;
+}
+
+/* About Content */
+.about-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    text-align: left;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.about-image img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+}
+
+.about-text {
+    max-width: 500px;
+}
+
+.about-text h3 {
+    font-size: 22px;
+    color: #FFFFFF;
+    margin-top: 10px;
+}
+
+.about-text p {
+    font-size: 16px;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+}
+
+.about-text ul {
+    list-style: none;
+    padding: 0;
+}
+
+.about-text ul li {
+    font-size: 16px;
+    color: #fff3eb;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+.about-text ul li i {
+    color: #ff6600;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* About Features */
+.about-features {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.feature {
+    text-align: center;
+    width: 250px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.feature:hover {
+    transform: scale(1.05);
+}
+
+.feature i {
+    font-size: 40px;
+    color: #ff6600;
+    margin-bottom: 10px;
+}
+
+.feature h4 {
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.feature p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-text {
+        text-align: center;
+    }
+}
+</style>
+
+<!-- About Us Section -->
+<section class="about">
+    <div class="container">
+        <h2 class="section-title">About Bite & Sip</h2>
+        <p class="section-subtitle">Bringing families together with delicious food and unforgettable memories!</p>
+
+        <div class="about-content">
+            <div class="about-image">
+                <img src="{{ url_for('static', filename='images/about-img.jpg') }}" alt="Restaurant Image">
+            </div>
+            <div class="about-text">
+                <h3>Our Story</h3>
+                <p>
+                    Bite & Sip was founded with a passion for serving high-quality, delicious food. 
+                    We believe that good food brings people together, creating lasting memories with 
+                    every meal.
+                </p>
+                <p>
+                    Our chefs use the freshest ingredients to craft mouthwatering dishes that 
+                    cater to all tastes. From classic favorites to innovative new flavors, 
+                    we strive to offer something for everyone.
+                </p>
+                <h3>Why Choose Us?</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Fresh, high-quality ingredients</li>
+                    <li><i class="fas fa-check-circle"></i> Fast and reliable delivery service</li>
+                    <li><i class="fas fa-check-circle"></i> A wide variety of delicious meals</li>
+                    <li><i class="fas fa-check-circle"></i> Excellent customer service</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="about-features">
+            <div class="feature">
+                <i class="fas fa-shipping-fast"></i>
+                <h4>Fast Delivery</h4>
+                <p>We ensure your food is delivered hot and fresh, right to your doorstep.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-dollar-sign"></i>
+                <h4>Affordable Prices</h4>
+                <p>Enjoy delicious meals at pocket-friendly prices.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-headset"></i>
+                <h4>24/7 Support</h4>
+                <p>Our team is here to assist you with any queries anytime.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

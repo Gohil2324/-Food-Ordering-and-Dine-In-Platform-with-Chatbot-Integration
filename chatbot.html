@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Chatbot - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<!-- Chatbot Section -->
+<section class="chatbot-page">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2>Chat with Bite & Sip Assistant</h2>
+            <p>Ask us anything! We can help with menu recommendations, orders, and more.</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-box" id="chat-box">
+                <div class="chat-message bot">
+                    <p>Hello! How can I assist you today?</p>
+                </div>
+            </div>
+
+            <div class="chat-input">
+                <input type="text" id="user-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .chatbot-page {
+        padding: 40px 0;
+    }
+    .chat-container {
+        width: 50%;
+        margin: 0 auto;
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .chat-box {
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+    }
+    .chat-message {
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        max-width: 75%;
+    }
+    .bot {
+        background: #28a745;
+        color: white;
+        align-self: flex-start;
+    }
+    .user {
+        background: #007bff;
+        color: white;
+        align-self: flex-end;
+        text-align: right;
+    }
+    .chat-input {
+        display: flex;
+        margin-top: 10px;
+    }
+    .chat-input input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .chat-input button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        margin-left: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+
+    //Show the JavaScript part that sends user messages to the backend:
+
+    function sendMessage() {
+        let userInput = document.getElementById("user-input").value;
+        if (userInput.trim() === "") return;
+
+        let chatBox = document.getElementById("chat-box");
+
+        // Append user message
+        let userMessage = document.createElement("div");
+        userMessage.classList.add("chat-message", "user");
+        userMessage.innerHTML = `<p>${userInput}</p>`;
+        chatBox.appendChild(userMessage);
+
+        document.getElementById("user-input").value = ""; // Clear input
+
+        // Send to backend (Flask)
+        fetch("/chatbot", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: userInput })
+        })
+        .then(response => response.json())
+        .then(data => {
+            let botMessage = document.createElement("div");
+            botMessage.classList.add("chat-message", "bot");
+            botMessage.innerHTML = `<p>${data.reply}</p>`;
+            chatBox.appendChild(botMessage);
+            chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to latest message
+        });
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    }
+</script>
+
+{% endblock %}

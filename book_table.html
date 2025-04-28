@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Book a Table - Bite & Sip{% endblock %}
+
+{% block content %}
+<style>
+    /* Page Background */
+    body {
+        background: #222222; /* Black Background */
+        color: white; /* Ensures text is readable */
+    }
+
+    /* Booking Container */
+    .booking-container {
+        max-width: 500px;
+        margin: 80px auto;
+        padding: 30px;
+        background: #222222; /* White container */
+        color: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        transition: 0.3s ease-in-out;
+    }
+
+    .booking-container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .booking-container h2 {
+        font-size: 26px;
+        color: #444;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    /* Input Fields */
+    .booking-container input,
+    .booking-container select,
+    .booking-container textarea {
+        width: 100%;
+        padding: 12px;
+        margin: 12px 0;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: 'Poppins', sans-serif;
+        transition: 0.3s;
+        background: #f9f9f9; /* Light grey input fields */
+    }
+
+    .booking-container input:focus,
+    .booking-container select:focus,
+    .booking-container textarea:focus {
+        border-color: #ff9900;
+        box-shadow: 0 0 8px rgba(255, 153, 0, 0.5);
+        outline: none;
+    }
+
+    /* Submit Button */
+    .booking-container button {
+        background: linear-gradient(45deg, #ffcc00, #ff6600);
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .booking-container button:hover {
+        background: linear-gradient(45deg, #ff6600, #ff3300);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .booking-container {
+            max-width: 90%;
+            padding: 25px;
+        }
+
+        .booking-container h2 {
+            font-size: 22px;
+        }
+
+        .booking-container input,
+        .booking-container select,
+        .booking-container textarea {
+            font-size: 14px;
+        }
+
+        .booking-container button {
+            font-size: 16px;
+            padding: 12px;
+        }
+    }
+</style>
+
+<!-- Booking Form -->
+<div class="booking-container">
+    <h2>Reserve Your Table</h2>
+    <form action="{{ url_for('book_table') }}" method="POST">
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="email" name="email" placeholder="Email Address" required>
+        <input type="tel" name="phone" placeholder="Phone Number" required>
+        <input type="date" name="date" required>
+        <input type="time" name="time" required>
+        <select name="guests" required>
+            <option value="">Number of Guests</option>
+            {% for i in range(1, 11) %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+        </select>
+        <textarea name="special_request" placeholder="Any Special Requests (Optional)" rows="3"></textarea>
+        <button type="submit">Reserve Now</button>
+    </form>
+</div>
+
+{% endblock %}

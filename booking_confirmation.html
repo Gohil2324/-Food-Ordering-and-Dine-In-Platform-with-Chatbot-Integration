@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Confirmation - Bite & Sip{% endblock %}
+
+{% block content %}
+<style>
+    /* Page Background */
+    body {
+        background: #f0f0f0; /* Light Grey Background */
+    }
+
+    /* Confirmation Container */
+    .confirmation-container {
+        max-width: 500px;
+        margin: 80px auto;
+        padding: 30px;
+        background: #ffffff; /* White container */
+        color: #333;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        transition: 0.3s ease-in-out;
+    }
+
+    .confirmation-container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .confirmation-container h2 {
+        font-size: 26px;
+        color: #27ae60; /* Green Confirmation */
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .confirmation-container p {
+        font-size: 18px;
+        margin: 10px 0;
+        color: #555;
+    }
+
+    .confirmation-container p strong {
+        color: #222;
+    }
+
+    /* Back to Home Button */
+    .confirmation-container .btn {
+        text-decoration: none;
+        background: linear-gradient(45deg, #ffcc00, #ff6600);
+        color: white;
+        padding: 14px 24px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 18px;
+        display: inline-block;
+        margin-top: 20px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .confirmation-container .btn:hover {
+        background: linear-gradient(45deg, #ff6600, #ff3300);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .confirmation-container {
+            max-width: 90%;
+            padding: 25px;
+        }
+
+        .confirmation-container h2 {
+            font-size: 24px;
+        }
+
+        .confirmation-container p {
+            font-size: 16px;
+        }
+
+        .confirmation-container .btn {
+            font-size: 16px;
+            padding: 12px;
+        }
+    }
+</style>
+
+<!-- Booking Confirmation Message -->
+<div class="confirmation-container">
+    <h2>Booking Confirmed! 🎉</h2>
+    <p><strong>Name:</strong> {{ booking.name }}</p>
+    <p><strong>Email:</strong> {{ booking.email }}</p>
+    <p><strong>Phone:</strong> {{ booking.phone }}</p>
+    <p><strong>Date:</strong> {{ booking.date }}</p>
+    <p><strong>Time:</strong> {{ booking.time }}</p>
+    <p><strong>Guests:</strong> {{ booking.guests }}</p>
+    <p><strong>Special Request:</strong> {{ booking.special_request if booking.special_request else 'None' }}</p>
+    
+    <a href="{{ url_for('index') }}" class="btn">Back to Home</a>
+</div>
+
+{% endblock %}

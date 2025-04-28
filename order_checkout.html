@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Checkout - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<style>
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Cart Section */
+.cart {
+    width: 80%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.cart-table th, .cart-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-table th {
+    background: #ff6600;
+    color: white;
+}
+
+.cart-table td input {
+    width: 50px;
+    text-align: center;
+}
+
+.cart-table td .remove-item {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.cart-table td .remove-item:hover {
+    background: darkred;
+}
+
+/* Order Summary */
+.order-summary {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.order-summary p {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+.order-summary strong {
+    font-size: 20px;
+    color: #ff6600;
+}
+
+.btn-order {
+    display: block;
+    background: #ff6600;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+.btn-order:hover {
+    background: #e65c00;
+}
+
+/* User Details */
+.user-details {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f2f2f2;
+    border-radius: 10px;
+}
+
+.user-details h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.user-details input, .user-details textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+</style>
+
+<!-- Order Checkout Section -->
+<section class="cart">
+    <h2>Order Checkout</h2>
+    <p>Review your cart and place your order</p>
+
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody id="cart-items">
+            <!-- Dynamically populated from localStorage -->
+        </tbody>
+    </table>
+
+    <!-- Order Summary -->
+    <div class="order-summary">
+        <p><strong>Subtotal:</strong> £<span id="subtotal">0.00</span></p>
+        <p><strong>Tax (5%):</strong> £<span id="tax">0.00</span></p>
+        <p><strong>Total:</strong> £<span id="total">0.00</span></p>
+    </div>
+
+    <!-- User Details -->
+    <div class="user-details">
+        <h3>Customer Information</h3>
+        <input type="text" id="user-name" placeholder="Full Name" required>
+        <input type="email" id="user-email" placeholder="Email Address" required>
+        <input type="text" id="user-phone" placeholder="Phone Number" required>
+        <textarea id="user-address" placeholder="Delivery Address" required></textarea>
+
+        <h3>Payment Method</h3>
+        <label><input type="radio" name="payment" value="cod" checked> Cash on Delivery</label>
+        <label><input type="radio" name="payment" value="card"> Credit/Debit Card</label>
+        <label><input type="radio" name="payment" value="paypal"> PayPal</label>
+    </div>
+
+    <button id="place-order" class="btn-order">Place Order</button>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let cartItemsContainer = document.getElementById("cart-items");
+
+    function updateTotals() {
+        let subtotal = 0;
+        cartItemsContainer.innerHTML = "";
+
+        cart.forEach((item, index) => {
+            let total = item.price * item.quantity;
+            subtotal += total;
+
+            let row = document.createElement("tr");
+            row.dataset.index = index;
+            row.innerHTML = `
+                <td>£{item.name}</td>
+                <td class="price">££{item.price.toFixed(2)}</td>
+                <td><input type="number" class="cart-qty" value="£{item.quantity}" min="1" data-index="£{index}"></td>
+                <td class="total-price">££{total.toFixed(2)}</td>
+                <td><button class="remove-item" data-index="£{index}">X</button></td>
+            `;
+            cartItemsContainer.appendChild(row);
+        });
+
+        let tax = subtotal * 0.05;
+        let total = subtotal + tax;
+
+        document.getElementById("subtotal").innerText = subtotal.toFixed(2);
+        document.getElementById("tax").innerText = tax.toFixed(2);
+        document.getElementById("total").innerText = total.toFixed(2);
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    cartItemsContainer.addEventListener("change", function (event) {
+        if (event.target.classList.contains("cart-qty")) {
+            let index = event.target.dataset.index;
+            let newQuantity = parseInt(event.target.value);
+            if (newQuantity < 1) newQuantity = 1;
+            cart[index].quantity = newQuantity;
+            updateTotals();
+        }
+    });
+
+    cartItemsContainer.addEventListener("click", function (event) {
+        if (event.target.classList.contains("remove-item")) {
+            let index = event.target.dataset.index;
+            cart.splice(index, 1);
+            updateTotals();
+        }
+    });
+
+    document.getElementById("place-order").addEventListener("click", function () {
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+
+        let userName = document.getElementById("user-name").value.trim();
+        let userEmail = document.getElementById("user-email").value.trim();
+        let userPhone = document.getElementById("user-phone").value.trim();
+        let userAddress = document.getElementById("user-address").value.trim();
+        let paymentMethod = document.querySelector("input[name='payment']:checked").value;
+
+        if (!userName || !userEmail || !userPhone || !userAddress) {
+            alert("Please fill all required fields!");
+            return;
+        }
+
+        let orderData = {
+            name: userName,
+            email: userEmail,
+            phone: userPhone,
+            address: userAddress,
+            payment: paymentMethod,
+            total_price: parseFloat(document.getElementById("total").innerText),
+            cart: cart
+        };
+
+        fetch("/place_order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(orderData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                localStorage.removeItem("cart");
+                window.location.href = data.redirect;
+            } else {
+                alert("Order failed: " + data.error);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+
+    updateTotals();
+});
+
+</script>
+
+{% endblock %}

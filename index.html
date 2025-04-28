@@ -1,0 +1,403 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<style>
+/* Header Navigation */
+header {
+    background: #000000;
+    padding: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Logo (Left Side) */
+.logo {
+    flex: 1;
+    text-align: left;
+    margin-left: 20px;
+}
+
+.logo img {
+    height: 80px;
+    width: auto; /* Keep aspect ratio */
+}
+
+/* Navigation Bar */
+.navbar {
+    flex: 2; /* Makes nav links stay centered */
+    text-align: center;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.navbar ul li a:hover {
+    color: #ffcc00;
+}
+
+/* Navigation Icons (Right Side) */
+.nav-icons {
+    flex: 1;
+    text-align: right;
+    margin-right: 20px;
+}
+
+.nav-icons a {
+    color: white;
+    font-size: 20px;
+    margin-left: 15px;
+    transition: color 0.3s;
+}
+
+.nav-icons a:hover {
+    color: #ffcc00;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo {
+        text-align: left;
+        width: 100%;
+        margin-left: 10px;
+    }
+
+    .navbar ul {
+        text-align: center;
+        padding-top: 10px;
+    }
+
+    .navbar ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    .nav-icons {
+        text-align: right;
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+}
+
+
+/* Hero Section */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url("{{ url_for('static', filename='images/hero-bg.png') }}") center/cover no-repeat;
+    position: relative;
+    text-align: center;
+    padding-top: 80px;
+}
+
+/* Dark overlay */
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.hero-text {
+    position: relative;
+    z-index: 1;
+    max-width: 70%;
+}
+
+/* Main Heading */
+.hero-text h1 {
+    font-size: 60px;
+    font-weight: bold;
+    font-family: 'Dancing Script', cursive;
+    margin-bottom: 10px;
+    color: white;
+}
+
+/* Subheading */
+.hero-text span {
+    font-size: 24px;
+    font-style: italic;
+    color: white;
+}
+
+/* Description */
+.hero-text p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: white;
+}
+
+/* Call to Action Button */
+.hero-text .btn {
+    text-decoration: none;
+    border: 2px solid white;
+    color: white;
+    padding: 14px 30px;
+    font-size: 18px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+}
+
+.hero-text .btn:hover {
+    background: white;
+    color: black;
+}
+
+/* Featured Dishes */
+.featured {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.featured h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #ffcc00;
+}
+
+/* Make dishes display in a grid */
+.dishes-grid {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+/* Individual dish styling */
+.dish {
+    background: #333;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    width: 280px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.dish:hover {
+    transform: scale(1.05);
+}
+
+.dish img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.dish h3 {
+    font-size: 20px;
+    margin: 10px 0;
+    color: white;
+}
+
+.dish p {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffcc00;
+}
+
+/* Add to Cart button */
+.dish button {
+    background-color: #ffcc00;
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.dish button:hover {
+    background-color: #ffaa00;
+}
+
+/* Call to Action */
+.cta {
+    text-align: center;
+    padding: 40px 20px;
+    background: #444;
+    color: white;
+    margin-top: 50px;
+    border-radius: 10px;
+}
+
+.cta h2 {
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+.cta .btn {
+    text-decoration: none;
+    background: #ffcc00;
+    color: black;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s;
+    border: none;
+}
+
+.cta .btn:hover {
+    background: #ffaa00;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-text {
+        max-width: 90%;
+    }
+
+    .hero-text h1 {
+        font-size: 42px;
+    }
+
+    .hero-text span {
+        font-size: 20px;
+    }
+
+    .hero-text p {
+        font-size: 16px;
+    }
+
+    .hero-text .btn {
+        font-size: 16px;
+        padding: 12px 25px;
+    }
+
+    .dishes-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar ul {
+        text-align: center;
+    }
+
+    .navbar ul li {
+        display: block;
+        margin: 10px 0;
+    }
+}
+</style>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-text">
+            <h1>Welcome to Bite & Sip</h1>
+            <p>Delicious food delivered to your doorstep.</p>
+            <a href="{{ url_for('menu') }}" class="btn">Explore Menu</a>
+        </div>
+        <div class="hero-image">
+
+        </div>
+    </div>
+</section>
+
+<!-- Featured Dishes -->
+<section class="featured">
+    <div class="container">
+        <h2>Popular Dishes</h2>
+        <div class="dishes-grid">
+            <div class="dish">
+                <img src="{{ url_for('static', filename='images/dish1.jpeg') }}" alt="Dish 1">
+                <h3>Spicy Chicken</h3>
+                <p>£12.99</p>
+                <button class="add-to-cart" data-id="1" data-name="Spicy Chicken" data-price="12.99">Add to Cart</button>
+            </div>
+            <div class="dish">
+                <img src="{{ url_for('static', filename='images/dish2.jpeg') }}" alt="Dish 2">
+                <h3>Grilled Steak</h3>
+                <p>£18.99</p>
+                <button class="add-to-cart" data-id="2" data-name="Grilled Steak" data-price="18.99">Add to Cart</button>
+            </div>
+            <div class="dish">
+                <img src="{{ url_for('static', filename='images/dish3.png') }}" alt="Dish 3">
+                <h3>Veggie Delight</h3>
+                <p>£10.99</p>
+                <button class="add-to-cart" data-id="3" data-name="Veggie Delight" data-price="10.99">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta">
+    <div class="container">
+        <h2>Order Now & Enjoy Exclusive Discounts!</h2>
+        <a href="{{ url_for('order') }}" class="btn">Place Your Order</a>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function updateCartUI() {
+        console.log("Cart Updated:", cart);
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    document.querySelectorAll(".add-to-cart").forEach(button => {
+        button.addEventListener("click", function () {
+            let item = {
+                id: this.getAttribute("data-id"),
+                name: this.getAttribute("data-name"),
+                price: parseFloat(this.getAttribute("data-price")),
+                quantity: 1
+            };
+
+            let existingItem = cart.find(cartItem => cartItem.id === item.id);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push(item);
+            }
+
+            updateCartUI();
+            alert(item.name + " added to cart!");
+        });
+    });
+});
+</script>
+
+{% endblock %}

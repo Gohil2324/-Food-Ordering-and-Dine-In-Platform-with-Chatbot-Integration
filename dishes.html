@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Dishes - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<!-- Dishes Section -->
+<section class="dishes">
+    <div class="container">
+        <h2 class="section-title">Our Popular Dishes</h2>
+        <p class="section-subtitle">Delicious meals curated just for you!</p>
+
+        <div class="dishes-container">
+            {% for dish in dishes %}
+            <div class="dish-card">
+                <img src="{{ url_for('static', filename='images/' + dish.image) }}" alt="{{ dish.name }}" class="dish-img">
+                <div class="dish-info">
+                    <h3>{{ dish.name }}</h3>
+                    <p class="dish-price">£{{ dish.price }}</p>
+                    <button class="btn btn-primary add-to-cart" data-id="{{ dish.id }}">Add to Cart</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".add-to-cart").forEach(button => {
+            button.addEventListener("click", function() {
+                const dishId = this.dataset.id;
+                fetch(`/add_to_cart`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id: dishId, quantity: 1 })
+                }).then(response => alert("Dish added to cart!"));
+            });
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Banners & Offers - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<!-- Banner Section -->
+<section class="banner">
+    <div class="container">
+        <h2>Exclusive Offers & Deals</h2>
+
+        <div class="banner-carousel">
+            <div class="banner-item">
+                <img src="{{ url_for('static', filename='images/banner1.jpg') }}" alt="Discount Offer">
+                <div class="banner-text">
+                    <h3>Get 20% Off on Your First Order!</h3>
+                    <p>Use Code: <strong>FIRST20</strong></p>
+                    <a href="{{ url_for('menu') }}" class="btn btn-primary">Order Now</a>
+                </div>
+            </div>
+
+            <div class="banner-item">
+                <img src="{{ url_for('static', filename='images/banner2.jpg') }}" alt="Limited Time Offer">
+                <div class="banner-text">
+                    <h3>Buy 1 Get 1 Free on Burgers!</h3>
+                    <p>Limited time offer. Order Now!</p>
+                    <a href="{{ url_for('menu') }}" class="btn btn-primary">View Menu</a>
+                </div>
+            </div>
+
+            <div class="banner-item">
+                <img src="{{ url_for('static', filename='images/banner3.jpg') }}" alt="Special Deal">
+                <div class="banner-text">
+                    <h3>Free Dessert on Orders Above £30</h3>
+                    <p>Enjoy a sweet treat with your meal.</p>
+                    <a href="{{ url_for('menu') }}" class="btn btn-primary">Check Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let currentIndex = 0;
+        const items = document.querySelectorAll(".banner-item");
+        function showNextBanner() {
+            items[currentIndex].classList.remove("active");
+            currentIndex = (currentIndex + 1) % items.length;
+            items[currentIndex].classList.add("active");
+        }
+        setInterval(showNextBanner, 5000);
+    });
+</script>
+
+{% endblock %}

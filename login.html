@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<style>
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #222; /* Dark Background */
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #333; /* Dark Grey */
+    border-radius: 10px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Login Section */
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* Login Content */
+.login-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Login Form */
+.login-form {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+}
+
+.form-title {
+    font-size: 28px;
+    color: #ffcc00;
+    margin-bottom: 10px;
+}
+
+.form-subtitle {
+    font-size: 16px;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+/* Form Group */
+.form-group {
+    display: flex;
+    align-items: center;
+    background: #444;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+}
+
+.form-group:hover {
+    background: #555;
+}
+
+.form-group label {
+    color: #ffcc00;
+    padding-right: 10px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background: none;
+    border: none;
+    outline: none;
+    color: white;
+}
+
+/* Remember Me Checkbox */
+.remember-me {
+    width: auto;
+    margin-right: 10px;
+}
+
+.form-group input[type="checkbox"] {
+    width: auto;
+}
+
+.remember-me-label {
+    font-size: 14px;
+    color: #ccc;
+}
+
+/* Login Button */
+.form-submit {
+    width: 100%;
+    background: #ffcc00;
+    color: black;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    border: none;
+}
+
+.form-submit:hover {
+    background: #ffaa00;
+}
+
+/* Forgot Password & Signup Links */
+.forgot-password, .signup-link {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.forgot-password a, .signup-link a {
+    color: #ffcc00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.forgot-password a:hover, .signup-link a:hover {
+    text-decoration: underline;
+}
+
+/* Login Image */
+.login-image {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+}
+
+.login-image img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .login-form, .login-image {
+        width: 100%;
+    }
+
+    .login-image {
+        margin-top: 20px;
+    }
+}
+</style>
+
+<!-- Login Section -->
+<section class="login">
+    <div class="container">
+        <div class="login-content">
+            <div class="login-form">
+                <h2 class="form-title">Sign In</h2>
+                <p class="form-subtitle">Welcome back! Please login to continue.</p>
+
+                <!-- Display Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="alert-container">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}
+
+                <!-- Login Form -->
+                <form method="POST" action="{{ url_for('login') }}" class="login-form" id="login-form">
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i></label>
+                        <input type="email" name="email" id="email" required placeholder="Your Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i></label>
+                        <input type="password" name="password" id="password" required placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="remember-me" id="remember-me" class="remember-me">
+                        <label for="remember-me" class="remember-me-label">Remember Me</label>
+                    </div>
+                    <div class="form-group form-button">
+                        <button type="submit" class="form-submit">Login</button>
+                    </div>
+                </form>
+
+                <p class="forgot-password"><a href="{{ url_for('forgot_password') }}">Forgot Password?</a></p>
+                <p class="signup-link">Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+            </div>
+
+            <div class="login-image">
+                <figure><img src="{{ url_for('static', filename='images/login-image.png') }}" alt="Login image"></figure>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript for Validations -->
+<script>
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+
+        if (!email.includes("@") || password.length < 6) {
+            event.preventDefault();
+            alert("Please enter a valid email and password (at least 6 characters).");
+        }
+    });
+</script>
+
+{% endblock %}

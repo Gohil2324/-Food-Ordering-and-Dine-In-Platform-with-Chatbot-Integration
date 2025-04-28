@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<!-- Products Section -->
+<section class="products-page">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2>Our Delicious Products</h2>
+            <p>Browse our tasty selection of dishes and add them to your cart.</p>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="search-filter">
+            <input type="text" id="search-bar" placeholder="Search for food..." onkeyup="searchProducts()">
+            <select id="category-filter" onchange="filterProducts()">
+                <option value="all">All Categories</option>
+                {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="row" id="product-list">
+            {% for product in products %}
+            <div class="col-md-4 product-card" data-category="{{ product.category }}">
+                <div class="card">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="price"><strong>£{{ product.price }}</strong></p>
+                        <button class="btn btn-primary add-to-cart" data-id="{{ product.id }}">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+    .products-page {
+        padding: 40px 0;
+    }
+    .section-header {
+        margin-bottom: 30px;
+    }
+    .search-filter {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .search-filter input, .search-filter select {
+        padding: 10px;
+        width: 48%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .product-card {
+        margin-bottom: 20px;
+    }
+    .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .card-body {
+        text-align: center;
+    }
+    .price {
+        font-size: 1.2rem;
+        color: #28a745;
+    }
+</style>
+
+<script>
+    function searchProducts() {
+        let input = document.getElementById("search-bar").value.toLowerCase();
+        let products = document.querySelectorAll(".product-card");
+        products.forEach(product => {
+            let title = product.querySelector(".card-title").textContent.toLowerCase();
+            product.style.display = title.includes(input) ? "block" : "none";
+        });
+    }
+
+    function filterProducts() {
+        let filter = document.getElementById("category-filter").value;
+        let products = document.querySelectorAll(".product-card");
+        products.forEach(product => {
+            let category = product.getAttribute("data-category");
+            product.style.display = (filter === "all" || category === filter) ? "block" : "none";
+        });
+    }
+</script>
+
+{% endblock %}

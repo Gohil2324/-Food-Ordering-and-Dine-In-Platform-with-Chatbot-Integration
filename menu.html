@@ -1,0 +1,366 @@
+{% extends 'base.html' %}
+
+{% block title %}Menu - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<style>
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #222; /* Dark Background */
+    color: white;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Menu Section */
+.menu {
+    padding: 50px 20px;
+}
+
+.section-title {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #ffcc00; /* Yellow */
+}
+
+.section-subtitle {
+    font-size: 18px;
+    color: #ccc;
+    margin-bottom: 30px;
+}
+
+/* Category Filters */
+.menu-categories {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.menu-filter {
+    background: #ffcc00;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    color: black;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.menu-filter.active {
+    background: #ffaa00;
+}
+
+.menu-filter:hover {
+    background: #ffaa00;
+}
+
+/* Menu Items */
+.menu-items {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.menu-item {
+    background: #333; /* Darker Card */
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    width: 280px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.menu-item:hover {
+    transform: scale(1.05);
+}
+
+.menu-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.menu-item h3 {
+    font-size: 20px;
+    margin: 10px 0;
+    color: white;
+}
+
+.menu-item p {
+    font-size: 16px;
+    color: #bbb;
+    margin-bottom: 10px;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffcc00;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.add-to-cart {
+    background-color: #ffcc00;
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.add-to-cart:hover {
+    background-color: #ffaa00;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .menu-items {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+</style>
+
+<!-- Menu Section -->
+<section class="menu">
+    <div class="container">
+        <h2 class="section-title">Our Menu</h2>
+        <p class="section-subtitle">Explore our delicious and freshly made dishes!</p>
+
+        <!-- Categories -->
+        <div class="menu-categories">
+            <button class="menu-filter active" data-category="all">All</button>
+            <button class="menu-filter" data-category="burgers">Burgers</button>
+            <button class="menu-filter" data-category="pizzas">Pizzas</button>
+            <button class="menu-filter" data-category="drinks">Drinks</button>
+            <button class="menu-filter" data-category="desserts">Desserts</button>
+        </div>
+
+        <!-- Menu Items -->
+<div class="menu-items">
+    <!-- Burgers -->
+    <div class="menu-item" data-category="burgers">
+        <img src="{{ url_for('static', filename='images/burger1.jpg') }}" alt="Burger">
+        <h3>Classic Cheeseburger</h3>
+        <p>Juicy beef patty, melted cheese, fresh lettuce, and tomato.</p>
+        <span class="price">£8.99</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="burgers">
+        <img src="{{ url_for('static', filename='images/burger2.jpg') }}" alt="Burger">
+        <h3>BBQ Bacon Burger</h3>
+        <p>Smoky BBQ sauce, crispy bacon, and cheddar cheese.</p>
+        <span class="price">£9.99</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="burgers">
+        <img src="{{ url_for('static', filename='images/burger3.jpg') }}" alt="Burger">
+        <h3>Spicy Jalapeño Burger</h3>
+        <p>Beef patty with jalapeños, pepper jack cheese, and chipotle mayo.</p>
+        <span class="price">£10.49</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="burgers">
+        <img src="{{ url_for('static', filename='images/burger4.jpg') }}" alt="Burger">
+        <h3>Mushroom Swiss Burger</h3>
+        <p>Grilled mushrooms, Swiss cheese, and garlic aioli on a brioche bun.</p>
+        <span class="price">£10.99</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="burgers">
+        <img src="{{ url_for('static', filename='images/burger5.jpg') }}" alt="Burger">
+        <h3>Vegan Black Bean Burger</h3>
+        <p>Black bean patty with avocado, lettuce, and vegan mayo.</p>
+        <span class="price">£9.49</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <!-- Pizzas -->
+    <div class="menu-item" data-category="pizzas">
+        <img src="{{ url_for('static', filename='images/pizza1.jpg') }}" alt="Pizza">
+        <h3>Margherita Pizza</h3>
+        <p>Fresh basil, mozzarella, and tomato sauce.</p>
+        <span class="price">£12.99</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="pizzas">
+        <img src="{{ url_for('static', filename='images/pizza2.jpg') }}" alt="Pizza">
+        <h3>Pepperoni Pizza</h3>
+        <p>Loaded with spicy pepperoni and extra cheese.</p>
+        <span class="price">£13.99</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="pizzas">
+        <img src="{{ url_for('static', filename='images/pizza3.jpg') }}" alt="Pizza">
+        <h3>BBQ Chicken Pizza</h3>
+        <p>Grilled chicken, BBQ sauce, red onions, and mozzarella.</p>
+        <span class="price">£14.49</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="pizzas">
+        <img src="{{ url_for('static', filename='images/pizza4.jpg') }}" alt="Pizza">
+        <h3>Veggie Supreme Pizza</h3>
+        <p>Mushrooms, bell peppers, olives, and onions.</p>
+        <span class="price">£13.49</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="pizzas">
+        <img src="{{ url_for('static', filename='images/pizza5.jpg') }}" alt="Pizza">
+        <h3>Meat Lover's Pizza</h3>
+        <p>Pepperoni, sausage, bacon, and ham with mozzarella.</p>
+        <span class="price">£15.99</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <!-- Drinks -->
+    <div class="menu-item" data-category="drinks">
+        <img src="{{ url_for('static', filename='images/drink1.jpg') }}" alt="Smoothie">
+        <h3>Strawberry Smoothie</h3>
+        <p>Fresh strawberries blended with yogurt.</p>
+        <span class="price">£5.99</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="drinks">
+        <img src="{{ url_for('static', filename='images/drink2.jpg') }}" alt="Juice">
+        <h3>Fresh Orange Juice</h3>
+        <p>Freshly squeezed orange juice, rich in Vitamin C.</p>
+        <span class="price">£4.99</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="drinks">
+        <img src="{{ url_for('static', filename='images/drink3.jpg') }}" alt="Milkshake">
+        <h3>Chocolate Milkshake</h3>
+        <p>Creamy milkshake with chocolate syrup and whipped cream.</p>
+        <span class="price">£6.49</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="drinks">
+        <img src="{{ url_for('static', filename='images/drink4.jpg') }}" alt="Soda">
+        <h3>Classic Coke</h3>
+        <p>Chilled Coca-Cola, a perfect refreshment.</p>
+        <span class="price">£3.99</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <!-- Desserts -->
+    <div class="menu-item" data-category="desserts">
+        <img src="{{ url_for('static', filename='images/dessert1.jpg') }}" alt="Dessert">
+        <h3>Chocolate Lava Cake</h3>
+        <p>Rich and gooey chocolate cake served with vanilla ice cream.</p>
+        <span class="price">£7.49</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="desserts">
+        <img src="{{ url_for('static', filename='images/dessert2.jpg') }}" alt="Dessert">
+        <h3>New York Cheesecake</h3>
+        <p>Classic cheesecake with a buttery graham cracker crust.</p>
+        <span class="price">£6.99</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="menu-item" data-category="desserts">
+        <img src="{{ url_for('static', filename='images/dessert3.jpg') }}" alt="Dessert">
+        <h3>Apple Pie</h3>
+        <p>Warm apple pie with cinnamon and a flaky crust.</p>
+        <span class="price">£6.49</span>
+        <button class="add-to-cart">Add to Cart</button>
+    </div>
+</div>
+
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // ✅ Update the Cart in LocalStorage
+    function updateCartUI() {
+        localStorage.setItem("cart", JSON.stringify(cart));
+        console.log("🛒 Cart Updated:", cart);
+    }
+
+    // ✅ Add to Cart Button Click Event
+    document.querySelectorAll(".add-to-cart").forEach(button => {
+        button.addEventListener("click", function () {
+            const parentElement = this.closest('.menu-item');
+
+            let item = {
+                id: parentElement.getAttribute("data-id") || Math.random().toString(36).substring(2, 9),
+                name: parentElement.querySelector('h3').innerText,
+                price: parseFloat(parentElement.querySelector('.price').innerText.replace('£', '')),
+                quantity: 1
+            };
+
+            // Check if item with same ID, name, and price exists in cart
+            let existingItem = cart.find(cartItem =>
+                cartItem.id === item.id &&
+                cartItem.name === item.name &&
+                cartItem.price === item.price
+            );
+
+            if (existingItem) {
+                existingItem.quantity++; // Increase quantity if item already exists
+            } else {
+                cart.push(item); // Add as a new item
+            }
+
+            updateCartUI();
+            alert(`£{item.name} added to cart! 🛒`);
+        });
+    });
+
+    // ✅ Category Filter Functionality
+    document.querySelectorAll('.menu-filter').forEach(button => {
+        button.addEventListener('click', function () {
+            let category = this.getAttribute('data-category');
+
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.style.display = category === 'all' || item.getAttribute('data-category') === category
+                    ? 'block'
+                    : 'none';
+            });
+
+            document.querySelectorAll('.menu-filter').forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // ✅ Clear Cart Data for Testing Purposes (Optional)
+    // Run this once in the console if needed to clear outdated cart data:
+    // localStorage.removeItem("cart");
+
+    // ✅ Display Cart Data in Console for Debugging
+    console.log("🟡 Current Cart Data:", cart);
+});
+</script>
+
+
+{% endblock %}

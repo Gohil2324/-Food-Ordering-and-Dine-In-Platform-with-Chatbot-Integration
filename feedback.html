@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Feedback - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<style>
+/* Feedback Section */
+.feedback-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #333;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.feedback-container h2 {
+    font-size: 28px;
+    color: #ffcc00;
+    margin-bottom: 20px;
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.feedback-form label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    text-align: left;
+    color: #ddd;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #777;
+    background: #444;
+    color: white;
+}
+
+.feedback-form textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.btn-submit {
+    background: #ffcc00;
+    color: black;
+    padding: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background: #ffaa00;
+}
+</style>
+
+<!-- Feedback Section -->
+<div class="feedback-container">
+    <h2>We Value Your Feedback! 💬</h2>
+    <form class="feedback-form" action="{{ url_for('submit_feedback') }}" method="POST">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" required placeholder="Enter your name">
+
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your email">
+
+        <label for="message">Your Feedback</label>
+        <textarea id="message" name="message" required placeholder="Write your feedback..."></textarea>
+
+        <button type="submit" class="btn-submit">Submit Feedback</button>
+    </form>
+</div>
+
+{% endblock %}

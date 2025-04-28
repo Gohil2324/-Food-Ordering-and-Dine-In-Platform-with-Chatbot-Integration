@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - Bite & Sip{% endblock %}
+
+{% block content %}
+
+<style>
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #222; /* Dark Background */
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #333; /* Dark Grey */
+    border-radius: 10px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Signup Section */
+.signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* Signup Content */
+.signup-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Signup Form */
+.signup-form {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+}
+
+.form-title {
+    font-size: 28px;
+    color: #ffcc00;
+    margin-bottom: 10px;
+}
+
+.form-subtitle {
+    font-size: 16px;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+/* Form Group */
+.form-group {
+    display: flex;
+    align-items: center;
+    background: #444;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+}
+
+.form-group:hover {
+    background: #555;
+}
+
+.form-group label {
+    color: #ffcc00;
+    padding-right: 10px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background: none;
+    border: none;
+    outline: none;
+    color: white;
+}
+
+/* Error Messages */
+.error-message {
+    color: red;
+    font-size: 14px;
+    display: block;
+    text-align: left;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+/* Terms & Conditions */
+.form-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.agree-term {
+    color: #ccc;
+    font-size: 14px;
+}
+
+/* Register Button */
+.form-submit {
+    width: 100%;
+    background: #ffcc00;
+    color: black;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    border: none;
+}
+
+.form-submit:hover {
+    background: #ffaa00;
+}
+
+/* Login Link */
+.login-link {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.login-link a {
+    color: #ffcc00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Signup Image */
+.signup-image {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+}
+
+.signup-image img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .signup-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .signup-form, .signup-image {
+        width: 100%;
+    }
+
+    .signup-image {
+        margin-top: 20px;
+    }
+}
+</style>
+
+<!-- Sign Up Section -->
+<section class="signup">
+    <div class="container">
+        <div class="signup-content">
+            <div class="signup-form">
+                <h2 class="form-title">Create an Account</h2>
+                <p class="form-subtitle">Join Bite & Sip and start ordering your favorite food!</p>
+
+                <!-- Display Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="alert-container">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}
+
+                <!-- Registration Form -->
+                <form method="POST" action="{{ url_for('signup') }}" class="register-form" id="register-form">
+
+                    <div class="form-group">
+                        <label for="name"><i class="fas fa-user"></i></label>
+                        <input type="text" name="name" id="name" required placeholder="Your Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i></label>
+                        <input type="email" name="email" id="email" required placeholder="Your Email">
+                        <small class="error-message" id="email-error"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone"><i class="fas fa-phone"></i></label>
+                        <input type="text" name="phone" id="phone" required placeholder="Your Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i></label>
+                        <input type="password" name="password" id="password" required placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password"><i class="fas fa-lock"></i></label>
+                        <input type="password" name="confirm_password" id="confirm_password" required placeholder="Confirm Password">
+                        <small class="error-message" id="password-error"></small>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="agree-term" id="agree-term" required>
+                        <label for="agree-term">I agree to the <a href="#">Terms of Service</a></label>
+                    </div>
+                    <div class="form-group form-button">
+                        <button type="submit" class="form-submit">Register</button>
+                    </div>
+                </form>
+
+                <p class="login-link">Already have an account? <a href="{{ url_for('login') }}">Sign in</a></p>
+            </div>
+
+            <div class="signup-image">
+                <figure><img src="{{ url_for('static', filename='images/signup-image.jpg') }}" alt="Sign up image"></figure>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript for Validations -->
+<script>
+    document.getElementById("register-form").addEventListener("submit", function(event) {
+        let password = document.getElementById("password").value;
+        let confirmPassword = document.getElementById("confirm_password").value;
+        let email = document.getElementById("email").value;
+        let emailError = document.getElementById("email-error");
+        let passwordError = document.getElementById("password-error");
+
+        emailError.innerText = "";
+        passwordError.innerText = "";
+
+        if (password !== confirmPassword) {
+            event.preventDefault();
+            passwordError.innerText = "Passwords do not match!";
+            return;
+        }
+
+        fetch("{{ url_for('check_email') }}", {
+            method: "POST",
+            body: JSON.stringify({ email: email }),
+            headers: { "Content-Type": "application/json" }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.available) {
+                event.preventDefault();
+                emailError.innerText = "Email is already registered!";
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+</script>
+
+{% endblock %}
